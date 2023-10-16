@@ -2,9 +2,10 @@
 
 import requests
 import json
+import os
 import csv
 import time
-from content_generator import generate_content  # Ensure content_generator.py is in the same directory or set in sys.path
+from content_generator import generate_content, generate_excerpt, generate_slug  # Ensure content_generator.py is in the same directory or set in sys.path
 
 def convert_to_portable_text(plain_text):
    
@@ -20,10 +21,10 @@ def convert_to_portable_text(plain_text):
         ]
     }
 
-def upload_to_sanity(title, content):
+def upload_to_sanity(title, slug, content, excerpt):
 
     url = "https://vc1wqrrf.api.sanity.io/v1/data/mutate/production"
-    token = "sk5ftOXXXN59dEkzWCnMt734HJa0yPKlkM1ZpISU0jM20exqoZlIXlfBe8a6kyQegEaGg51V8s8WoppjOX7G3k5cWTRo9jECoV2dr0D8rRFpdKIvNlKikikuNHbCBC0OL1XHHd1vHzLKcUnfWftGETSD1NhSnlm2CGFwUZkqWSucBWd513GJ"
+    token = os.environ['SANITY_TOKEN']
     
     headers = {
         "Content-Type": "application/json",
@@ -34,9 +35,12 @@ def upload_to_sanity(title, content):
         "mutations": [
             {
                 "create": {
-                    "_type": "blogPost",
+                    "_type": "Post",
                     "title": title,
-                    "content": content
+                    "slug": slug,
+                    "content": content,
+                    "excerpt": excerpt,
+                    "author": "Ello"
                 }
             }
         ]
@@ -64,10 +68,12 @@ def main():
             print(f"Generating content for: {title}")
             
             generated_content = generate_content(title)
+            excerpt = generate_excerpt(title)
+            slug = generate_slug(title)
             
             if generated_content:
                 portable_text_content = convert_to_portable_text(generated_content)
-                upload_to_sanity(title, portable_text_content)
+                upload_to_sanity(title, slug, portable_text_content, excerpt)
                 end_time = time.time()
                 elapsed_time = (end_time - start_time) / 60
                 print(f"Successfully published '{title}' to Sanity site in '{elapsed_time}' minutes")
