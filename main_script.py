@@ -41,7 +41,7 @@ def upload_to_sanity(title, slug, content, excerpt):
         "mutations": [
             {
                 "create": {
-                    "_type": "Post",
+                    "_type": "post",
                     "title": title,
                     "slug": slug,
                     "content": content,
