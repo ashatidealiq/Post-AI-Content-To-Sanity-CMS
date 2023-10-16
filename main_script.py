@@ -24,19 +24,19 @@ def convert_to_portable_text(plain_text):
 def upload_to_sanity(title, slug, content, excerpt):
 
     url = "https://vc1wqrrf.api.sanity.io/v1/data/mutate/production"
-    token = os.environ['SANITY_TOKEN']
-    
-    print('func sig upload')
-    print(title)
-    print(slug)
-    print(excerpt)
-    print('......')
+
+    # Error handling for the absence of the SANITY_TOKEN environment variable
+    try:
+        token = os.environ['SANITY_TOKEN']
+    except KeyError:
+        print("Error: SANITY_TOKEN environment variable not set.")
+        return
 
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {token}"
     }
-    
+
     payload = {
         "mutations": [
             {
@@ -51,8 +51,21 @@ def upload_to_sanity(title, slug, content, excerpt):
             }
         ]
     }
-    
-    response = requests.post(url, headers=headers, data=json.dumps(payload))
+
+    try:
+        response = requests.post(url, headers=headers, data=json.dumps(payload))
+
+        # Print the response status code and content for debugging
+        print(f"Status Code: {response.status_code}")
+        print(f"Response: {response.text}")
+
+        if response.status_code != 200:
+            print(f"Error posting to Sanity. Status Code: {response.status_code}")
+
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+
+    return response
     
 def main():
     # Open and read the CSV file
