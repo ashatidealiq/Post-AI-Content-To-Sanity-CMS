@@ -5,10 +5,6 @@ import csv
 import time
 from content_generator import generate_content, generate_excerpt, generate_slug  
 
-#
-# main_script.py - 
-# 
-
 def convert_to_portable_text(plain_text):
     # Returns dict as converted portable text
     return {
@@ -24,9 +20,9 @@ def convert_to_portable_text(plain_text):
 def upload_to_sanity(title, slug, content, excerpt):
     url = "https://vc1wqrrf.api.sanity.io/v1/data/mutate/production"
     author = "b98df841-6f6d-49d9-82f9-654ed8339e5f" # set author to "Ello"
-    try:
-        token = os.environ['SANITY_TOKEN']
-    except KeyError:
+
+    token = os.environ.get('SANITY_TOKEN')
+    if not token:
         print("Error: SANITY_TOKEN environment variable not set.")
         return
 
@@ -35,7 +31,10 @@ def upload_to_sanity(title, slug, content, excerpt):
         "Authorization": f"Bearer {token}"
     }
 
-    # Modified payload with the fixes
+    # Ensure content is an array
+    if not isinstance(content, list):
+        content = [content]
+
     payload = {
         "mutations": [
             {
@@ -68,9 +67,8 @@ def upload_to_sanity(title, slug, content, excerpt):
         print(f"An error occurred: {str(e)}")
 
     return response
-    
+
 def main():
-    # Open and read the CSV file
     with open('blog_titles.csv', 'r') as csv_file:
         csv_reader = csv.reader(csv_file)
         total_start_time = time.time()  # Start time for all posts
