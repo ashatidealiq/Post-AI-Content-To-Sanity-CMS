@@ -60,5 +60,5 @@ def generate_content(title, max_tokens=150, temperature=0.7):
         point = re.sub('^\d+\.\s+', '', point)
         content += f"<h2>{point}</h2>\n{detailed_sections[i]}\n"
     content += f"<h2>Conclusion</h2>\n{conclusion}\n"
-    print (content)
+    # print (content)
     return content

@@ -68,6 +68,9 @@ def main():
             
             if generated_content:
                 portable_text_content = convert_to_portable_text(generated_content)
+                print('.........................')
+                print(portable_text_content)
+                print('.........................')
                 upload_to_sanity(title, slug, portable_text_content, excerpt)
                 end_time = time.time()
                 elapsed_time = (end_time - start_time) / 60
