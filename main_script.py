@@ -1,17 +1,20 @@
 import requests
 import json
+import uuid
 import os
 import csv
 import time
 from content_generator import generate_content, generate_excerpt, generate_slug  
 
 def convert_to_portable_text(plain_text):
-    # Returns dict as converted portable text
+    # Returns dict as converted portable text with unique _key
     return {
         "_type": "block",
+        "_key": str(uuid.uuid4()),  # Generate a unique key for the block
         "children": [
             {
                 "_type": "span",
+                "_key": str(uuid.uuid4()),  # Generate a unique key for the span
                 "text": plain_text
             }
         ]
