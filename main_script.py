@@ -7,7 +7,7 @@ import time
 from content_generator import generate_content, generate_excerpt, generate_slug  
 
 def convert_to_portable_text(plain_text):
-    # Returns dict as converted portable text with unique _key
+    # Returns dict as converted portable text with unique _key and markDefs
     return {
         "_type": "block",
         "_key": str(uuid.uuid4()),  # Generate a unique key for the block
@@ -17,7 +17,8 @@ def convert_to_portable_text(plain_text):
                 "_key": str(uuid.uuid4()),  # Generate a unique key for the span
                 "text": plain_text
             }
-        ]
+        ],
+        "markDefs": []  
     }
 
 def upload_to_sanity(title, slug, content, excerpt):
