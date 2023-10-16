@@ -38,7 +38,7 @@ def generate_content(title, max_tokens=150, temperature=0.7):
     
     def get_intro_and_conclusion(title):
         intro_prompt = f"You are an Australian mortgage broker writing blog content for your website. Write an introduction for a blog post with the title: '{title}'"
-        conclusion_prompt = f"You are an Australian mortgage broker writing a blog post titled '{title}'. Your firm is called . Write a conclusion for a blog post with the title: '{title}'. Emphasize how your firm would love to help and answer questions and encourage the reader to contact you"
+        conclusion_prompt = f"You are an Australian mortgage broker writing a blog post titled '{title}'. Your firm is called Ello Lending. Write a conclusion for a blog post with the title: '{title}'. Emphasize how your firm would love to help and answer questions and encourage the reader to contact you"
         intro = get_gpt_response(intro_prompt)
         conclusion = get_gpt_response(conclusion_prompt)
         return intro, conclusion
