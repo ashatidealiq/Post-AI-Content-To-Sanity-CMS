@@ -26,6 +26,12 @@ def upload_to_sanity(title, slug, content, excerpt):
     url = "https://vc1wqrrf.api.sanity.io/v1/data/mutate/production"
     token = os.environ['SANITY_TOKEN']
     
+    print('func sig upload')
+    print(title)
+    print(slug)
+    print(excerpt)
+    print('......')
+
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {token}"
@@ -68,9 +74,6 @@ def main():
             
             if generated_content:
                 portable_text_content = convert_to_portable_text(generated_content)
-                print('.........................')
-                print(portable_text_content)
-                print('.........................')
                 upload_to_sanity(title, slug, portable_text_content, excerpt)
                 end_time = time.time()
                 elapsed_time = (end_time - start_time) / 60
