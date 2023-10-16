@@ -59,7 +59,7 @@ def main():
         csv_reader = csv.reader(csv_file)
         
         # Skip the header row (if it exists)
-        next(csv_reader, None)
+        # next(csv_reader, None)
         
         total_start_time = time.time()  # Start time for all posts
         for row in csv_reader:
