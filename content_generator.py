@@ -1,17 +1,17 @@
 import openai
 import os
-import re  # Needed for regular expression operations
+import re
+import json
 
-# Ensure to replace with your OpenAI API Key
 openai.api_key = os.environ['OPENAI_API_KEY']
 
 def generate_excerpt(title):
-    prompt = f"Provide a brief teaser or preview for a blog post titled '{title}' about the Australian mortgage market."
+    prompt = f"Provide a brief preview text for a blog post titled '{title}' about the Australian mortgage market."
     try:
         response = openai.Completion.create(
             engine="text-davinci-003",
             prompt=prompt,
-            max_tokens=50,  # Limiting the length to get a concise description
+            max_tokens=50,  
             temperature=0.7
         )
         return response.choices[0].text.strip()
@@ -54,11 +54,74 @@ def generate_content(title, max_tokens=150, temperature=0.7):
         detailed_section = get_gpt_response(prompt)
         detailed_sections.append(detailed_section)
 
-    content = f"{intro}\n"
+    content_blocks = []
+
+    # Add intro to the content blocks
+    content_blocks.append({
+        "_type": "block",
+        "style": "normal",
+        "children": [
+            {
+                "_type": "span",
+                "text": intro
+            }
+        ]
+    })
+
     points = important_points.split('\n')
     for i, point in enumerate(points):
         point = re.sub('^\d+\.\s+', '', point)
-        content += f"<h2>{point}</h2>\n{detailed_sections[i]}\n"
-    content += f"<h2>Conclusion</h2>\n{conclusion}\n"
-    # print (content)
-    return content
+
+        # Add point as subheading
+        content_blocks.append({
+            "_type": "block",
+            "style": "h2",
+            "children": [
+                {
+                    "_type": "span",
+                    "text": point
+                }
+            ]
+        })
+
+        # Splitting detailed section by paragraphs and adding to content blocks
+        for paragraph in detailed_sections[i].split('\n'):
+            content_blocks.append({
+                "_type": "block",
+                "style": "normal",
+                "children": [
+                    {
+                        "_type": "span",
+                        "text": paragraph
+                    }
+                ]
+            })
+
+    # Add conclusion to the content blocks
+    content_blocks.append({
+        "_type": "block",
+        "style": "h2",
+        "children": [
+            {
+                "_type": "span",
+                "text": "Conclusion"
+            }
+        ]
+    })
+    content_blocks.append({
+        "_type": "block",
+        "style": "normal",
+        "children": [
+            {
+                "_type": "span",
+                "text": conclusion
+            }
+        ]
+    })
+
+    return content_blocks
+
+if __name__ == "__main__":
+    title = "Understanding the Australian Mortgage Market"
+    content = generate_portable_text_content(title)
+    print(json.dumps(content, indent=4))
