@@ -1,16 +1,12 @@
-# main_script.py
-
 import requests
 import json
 import os
 import csv
 import time
-from content_generator import generate_content, generate_excerpt, generate_slug  # Ensure content_generator.py is in the same directory or set in sys.path
+from content_generator import generate_content, generate_excerpt, generate_slug  
 
 def convert_to_portable_text(plain_text):
-   
     # Returns dict as converted portable text
-    
     return {
         "_type": "block",
         "children": [
@@ -22,10 +18,7 @@ def convert_to_portable_text(plain_text):
     }
 
 def upload_to_sanity(title, slug, content, excerpt):
-
     url = "https://vc1wqrrf.api.sanity.io/v1/data/mutate/production"
-
-    # Error handling for the absence of the SANITY_TOKEN environment variable
     try:
         token = os.environ['SANITY_TOKEN']
     except KeyError:
@@ -37,16 +30,23 @@ def upload_to_sanity(title, slug, content, excerpt):
         "Authorization": f"Bearer {token}"
     }
 
+    # Modified payload with the fixes
     payload = {
         "mutations": [
             {
                 "create": {
                     "_type": "post",
                     "title": title,
-                    "slug": slug,
-                    "content": content,
-                    "excerpt": excerpt,
-                    "author": "Ello"
+                    "slug": {
+                        "_type": "slug",
+                        "current": slug  
+                    },
+                    "content": content,  
+                    "excerpt": convert_to_portable_text(excerpt),
+                    "author": {
+                        "_type": "reference",
+                        "_ref": "Ello"  
+                    }
                 }
             }
         ]
@@ -54,11 +54,8 @@ def upload_to_sanity(title, slug, content, excerpt):
 
     try:
         response = requests.post(url, headers=headers, data=json.dumps(payload))
-
-        # Print the response status code and content for debugging
         print(f"Status Code: {response.status_code}")
         print(f"Response: {response.text}")
-
         if response.status_code != 200:
             print(f"Error posting to Sanity. Status Code: {response.status_code}")
 
@@ -71,20 +68,16 @@ def main():
     # Open and read the CSV file
     with open('blog_titles.csv', 'r') as csv_file:
         csv_reader = csv.reader(csv_file)
-        
-        # Skip the header row (if it exists)
-        # next(csv_reader, None)
-        
         total_start_time = time.time()  # Start time for all posts
         for row in csv_reader:
             start_time = time.time()  # Start time for one post
             title = row[0]
             print(f"Generating content for: {title}")
-            
+
             generated_content = generate_content(title)
             excerpt = generate_excerpt(title)
             slug = generate_slug(title)
-            
+
             if generated_content:
                 portable_text_content = convert_to_portable_text(generated_content)
                 upload_to_sanity(title, slug, portable_text_content, excerpt)
@@ -98,7 +91,6 @@ def main():
         total_end_time = time.time()
         total_elapsed_time = total_end_time - total_start_time
         print(f"Total elapsed time for all posts: '{total_elapsed_time}' seconds")
-
 
 if __name__ == "__main__":
     main()
