@@ -48,11 +48,6 @@ def upload_to_sanity(title, slug, content, excerpt):
     
     response = requests.post(url, headers=headers, data=json.dumps(payload))
     
-    if response.status_code == 200:
-        print("Post uploaded successfully!")
-    else:
-        print(f"Failed to upload post. Status Code: {response.status_code}, Response: {response.text}")
-
 def main():
     # Open and read the CSV file
     with open('blog_titles.csv', 'r') as csv_file:
