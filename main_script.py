@@ -5,6 +5,10 @@ import csv
 import time
 from content_generator import generate_content, generate_excerpt, generate_slug  
 
+#
+# main_script.py - 
+# 
+
 def convert_to_portable_text(plain_text):
     # Returns dict as converted portable text
     return {
@@ -19,6 +23,7 @@ def convert_to_portable_text(plain_text):
 
 def upload_to_sanity(title, slug, content, excerpt):
     url = "https://vc1wqrrf.api.sanity.io/v1/data/mutate/production"
+    author = "b98df841-6f6d-49d9-82f9-654ed8339e5f" # set author to "Ello"
     try:
         token = os.environ['SANITY_TOKEN']
     except KeyError:
@@ -45,7 +50,7 @@ def upload_to_sanity(title, slug, content, excerpt):
                     "excerpt": convert_to_portable_text(excerpt),
                     "author": {
                         "_type": "reference",
-                        "_ref": "Ello"  
+                        "_ref": author  
                     }
                 }
             }
