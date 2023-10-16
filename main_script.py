@@ -47,7 +47,7 @@ def upload_to_sanity(title, slug, content, excerpt):
                         "current": slug  
                     },
                     "content": content,  
-                    "excerpt": convert_to_portable_text(excerpt),
+                    "excerpt": excerpt,
                     "author": {
                         "_type": "reference",
                         "_ref": author  
