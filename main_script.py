@@ -4,6 +4,7 @@ import uuid
 import os
 import csv
 import time
+from datetime import datetime
 from content_generator import generate_content, generate_excerpt, generate_slug  
 
 def convert_to_portable_text(plain_text):
@@ -24,6 +25,7 @@ def convert_to_portable_text(plain_text):
 def upload_to_sanity(title, slug, content, excerpt):
     url = "https://vc1wqrrf.api.sanity.io/v1/data/mutate/production"
     author = "b98df841-6f6d-49d9-82f9-654ed8339e5f" # set author to "Ello"
+    current_date = datetime.now().date().isoformat()
 
     token = os.environ.get('SANITY_TOKEN')
     if not token:
@@ -51,6 +53,7 @@ def upload_to_sanity(title, slug, content, excerpt):
                     },
                     "content": content,  
                     "excerpt": excerpt,
+                    "date": current_date,
                     "author": {
                         "_type": "reference",
                         "_ref": author  
