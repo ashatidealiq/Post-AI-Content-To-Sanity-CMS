@@ -28,7 +28,7 @@ def generate_content(title, max_tokens=150, temperature=0.7):
     
     def get_gpt_response(prompt):
         return openai.Completion.create(
-            engine='gpt-3.5-turbo',
+            model='gpt-3.5-turbo',
             prompt=prompt,
             max_tokens=500,
             n=1,
