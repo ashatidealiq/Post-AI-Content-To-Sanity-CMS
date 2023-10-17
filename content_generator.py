@@ -1,8 +1,7 @@
 import openai
 import os
-import re  # Needed for regular expression operations
+import re
 
-# Ensure to replace with your OpenAI API Key
 openai.api_key = os.environ['OPENAI_API_KEY']
 
 def generate_excerpt(title):
@@ -25,7 +24,6 @@ def generate_slug(title):
     return slug
 
 def generate_content(title, max_tokens=150, temperature=0.7):
-    
     def get_gpt_response(prompt):
         return openai.Completion.create(
             engine='text-davinci-003',
@@ -54,21 +52,19 @@ def generate_content(title, max_tokens=150, temperature=0.7):
         detailed_section = get_gpt_response(prompt)
         detailed_sections.append(detailed_section)
 
-    # Construct content as a list of blocks
+    # Convert content to blocks for portable text
     content_blocks = []
     content_blocks.append({"type": "paragraph", "text": intro})
+    
+    points = [point.strip() for point in important_points.split('\n')]
+    points = [re.sub('^\d+\.\s+', '', point) for point in points if point and point != '.']
 
-    points = important_points.split('\n')
-    for i, point in enumerate(points):
-        point = re.sub('^\d+\.\s+', '', point)
-        
-        # Add the point as an h2 heading
+    for i, point in enumerate(points):        
         content_blocks.append({"type": "h2", "text": point})
-        
-        # Add the detailed section as a paragraph
         content_blocks.append({"type": "paragraph", "text": detailed_sections[i]})
-        
+
     content_blocks.append({"type": "h2", "text": "We understand you and we want to help"})
     content_blocks.append({"type": "paragraph", "text": conclusion})
 
     return content_blocks
+

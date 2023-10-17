@@ -56,7 +56,7 @@ def upload_to_sanity(title, slug, content, excerpt):
     if not isinstance(content, list):
         content = [content]
 
-    print(content)
+    # print(content) debug message
 
     payload = {
         "mutations": [
