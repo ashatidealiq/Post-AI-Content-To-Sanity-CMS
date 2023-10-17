@@ -60,7 +60,7 @@ def generate_content(title, max_tokens=150, temperature=0.7):
     points = important_points.split('\n')
     for i, point in enumerate(points):
         point = re.sub('^\d+\.\s+', '', point).strip()
-        if point:  # Only add if the point is not empty or just a period
+        if point and point != '.':  # Check to ensure the point is not empty or just a period
             content_blocks.append({"type": "h2", "text": point})
             content_blocks.append({"type": "paragraph", "text": detailed_sections[i]})
 
@@ -68,8 +68,7 @@ def generate_content(title, max_tokens=150, temperature=0.7):
     if conclusion.startswith('.'):
         conclusion = conclusion[1:].strip()
 
-    content_blocks.append({"type": "h2", "text": "We understand you and we want to help!"})
+    content_blocks.append({"type": "h2", "text": "We understand you and we want to help"})
     content_blocks.append({"type": "paragraph", "text": conclusion})
 
     return content_blocks
-
