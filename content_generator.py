@@ -54,11 +54,21 @@ def generate_content(title, max_tokens=150, temperature=0.7):
         detailed_section = get_gpt_response(prompt)
         detailed_sections.append(detailed_section)
 
-    content = f"{intro}\n"
+    # Construct content as a list of blocks
+    content_blocks = []
+    content_blocks.append({"type": "paragraph", "text": intro})
+
     points = important_points.split('\n')
     for i, point in enumerate(points):
         point = re.sub('^\d+\.\s+', '', point)
-        content += f"{point}\n{detailed_sections[i]}\n"
-    content += f"We understand you and we want to help\n{conclusion}\n"
-    # print (content)
-    return content
+        
+        # Add the point as an h2 heading
+        content_blocks.append({"type": "h2", "text": point})
+        
+        # Add the detailed section as a paragraph
+        content_blocks.append({"type": "paragraph", "text": detailed_sections[i]})
+        
+    content_blocks.append({"type": "paragraph", "text": "We understand you and we want to help"})
+    content_blocks.append({"type": "paragraph", "text": conclusion})
+
+    return content_blocks

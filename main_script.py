@@ -7,20 +7,35 @@ import time
 from datetime import datetime
 from content_generator import generate_content, generate_excerpt, generate_slug  
 
-def convert_to_portable_text(plain_text):
-    # Returns dict as converted portable text with unique _key and markDefs
-    return {
-        "_type": "block",
-        "_key": str(uuid.uuid4()),  # Generate a unique key for the block
-        "children": [
-            {
-                "_type": "span",
-                "_key": str(uuid.uuid4()),  # Generate a unique key for the span
-                "text": plain_text
-            }
-        ],
-        "markDefs": []  
-    }
+def convert_to_portable_text(content_blocks):
+    portable_text = []
+    for block in content_blocks:
+        if block['type'] == 'h2':
+            # Create a block with h2 style
+            portable_text.append({
+                "_type": "block",
+                "_key": str(uuid.uuid4()),
+                "children": [{
+                    "_type": "span",
+                    "_key": str(uuid.uuid4()),
+                    "text": block['text']
+                }],
+                "style": "h2",
+                "markDefs": []
+            })
+        elif block['type'] == 'paragraph':
+            # Create a regular block
+            portable_text.append({
+                "_type": "block",
+                "_key": str(uuid.uuid4()),
+                "children": [{
+                    "_type": "span",
+                    "_key": str(uuid.uuid4()),
+                    "text": block['text']
+                }],
+                "markDefs": []
+            })
+    return portable_text
 
 def upload_to_sanity(title, slug, content, excerpt):
     url = "https://vc1wqrrf.api.sanity.io/v1/data/mutate/production"
