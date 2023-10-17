@@ -2,6 +2,7 @@ import openai
 import os
 import re
 
+# Ensure to replace with your OpenAI API Key
 openai.api_key = os.environ['OPENAI_API_KEY']
 
 def generate_excerpt(title):
@@ -10,7 +11,7 @@ def generate_excerpt(title):
         response = openai.Completion.create(
             engine="text-davinci-003",
             prompt=prompt,
-            max_tokens=50,  # Limiting the length to get a concise description
+            max_tokens=50,
             temperature=0.7
         )
         return response.choices[0].text.strip()
@@ -24,6 +25,7 @@ def generate_slug(title):
     return slug
 
 def generate_content(title, max_tokens=150, temperature=0.7):
+    
     def get_gpt_response(prompt):
         return openai.Completion.create(
             engine='text-davinci-003',
@@ -52,18 +54,21 @@ def generate_content(title, max_tokens=150, temperature=0.7):
         detailed_section = get_gpt_response(prompt)
         detailed_sections.append(detailed_section)
 
-    # Convert content to blocks for portable text
     content_blocks = []
     content_blocks.append({"type": "paragraph", "text": intro})
-    
-    points = [point.strip() for point in important_points.split('\n')]
-    points = [re.sub('^\d+\.\s+', '', point) for point in points if point and point != '.']
 
-    for i, point in enumerate(points):        
-        content_blocks.append({"type": "h2", "text": point})
-        content_blocks.append({"type": "paragraph", "text": detailed_sections[i]})
+    points = important_points.split('\n')
+    for i, point in enumerate(points):
+        point = re.sub('^\d+\.\s+', '', point).strip()
+        if point:  # Only add if the point is not empty or just a period
+            content_blocks.append({"type": "h2", "text": point})
+            content_blocks.append({"type": "paragraph", "text": detailed_sections[i]})
 
-    content_blocks.append({"type": "h2", "text": "We understand you and we want to help"})
+    # Remove a leading period (if present) from the conclusion
+    if conclusion.startswith('.'):
+        conclusion = conclusion[1:].strip()
+
+    content_blocks.append({"type": "h2", "text": "We understand you and we want to help!"})
     content_blocks.append({"type": "paragraph", "text": conclusion})
 
     return content_blocks
