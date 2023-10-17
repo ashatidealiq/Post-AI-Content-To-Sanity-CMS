@@ -68,7 +68,7 @@ def generate_content(title, max_tokens=150, temperature=0.7):
         # Add the detailed section as a paragraph
         content_blocks.append({"type": "paragraph", "text": detailed_sections[i]})
         
-    content_blocks.append({"type": "paragraph", "text": "We understand you and we want to help"})
+    content_blocks.append({"type": "h2", "text": "We understand you and we want to help"})
     content_blocks.append({"type": "paragraph", "text": conclusion})
 
     return content_blocks
