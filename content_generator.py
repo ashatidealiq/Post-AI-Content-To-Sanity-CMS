@@ -6,12 +6,12 @@ import re
 openai.api_key = os.environ['OPENAI_API_KEY']
 
 def generate_excerpt(title):
-    prompt = f"Provide a brief teaser or preview for a blog post titled '{title}' about the Australian mortgage market."
+    prompt = f"Provide a brief preview passage for a blog post titled '{title}' about the Australian mortgage market."
     try:
         response = openai.Completion.create(
             engine="text-davinci-003",
             prompt=prompt,
-            max_tokens=50,
+            max_tokens=250,
             temperature=0.7
         )
         return response.choices[0].text.strip()
