@@ -38,8 +38,8 @@ def convert_to_portable_text(content_blocks):
     return portable_text
 
 def upload_to_sanity(title, slug, content, excerpt):
-    url = "https://vc1wqrrf.api.sanity.io/v1/data/mutate/production"
-    author = "b98df841-6f6d-49d9-82f9-654ed8339e5f" # set author to "Ello"
+    url = os.environ.get('SANITY_URL') # choose Sanity url and dataset
+    author = os.environ.get('SANITY_USER') # set author to USER ID from Sanity
     current_date = datetime.now().date().isoformat()
 
     token = os.environ.get('SANITY_TOKEN')
