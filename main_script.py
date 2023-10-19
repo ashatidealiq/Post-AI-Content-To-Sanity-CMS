@@ -11,7 +11,7 @@ def convert_to_portable_text(content_blocks):
     portable_text = []
     for block in content_blocks:
         if block['type'] == 'h2':
-            # Create a block with h2 style
+
             portable_text.append({
                 "_type": "block",
                 "_key": str(uuid.uuid4()),
@@ -24,7 +24,7 @@ def convert_to_portable_text(content_blocks):
                 "markDefs": []
             })
         elif block['type'] == 'paragraph':
-            # Create a regular block
+
             portable_text.append({
                 "_type": "block",
                 "_key": str(uuid.uuid4()),
@@ -38,8 +38,8 @@ def convert_to_portable_text(content_blocks):
     return portable_text
 
 def upload_to_sanity(title, slug, content, excerpt):
-    url = os.environ.get('SANITY_URL') # choose Sanity url and dataset
-    author = os.environ.get('SANITY_USER') # set author to USER ID from Sanity
+    url = os.environ.get('SANITY_URL') # your Sanity url and dataset
+    author = os.environ.get('SANITY_USER') # set post author ID for Sanity
     current_date = datetime.now().date().isoformat()
 
     token = os.environ.get('SANITY_TOKEN')
@@ -52,7 +52,6 @@ def upload_to_sanity(title, slug, content, excerpt):
         "Authorization": f"Bearer {token}"
     }
 
-    # Ensure content is an array
     if not isinstance(content, list):
         content = [content]
 

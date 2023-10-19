@@ -2,15 +2,13 @@ import requests
 import json
 import os
 
+# how do you delete docs in Sanity
+
 def delete_post_from_sanity(document_id):
-    url = "https://vc1wqrrf.api.sanity.io/v1/data/mutate/production"  # Replace 'YOUR_PROJECT_ID' and 'YOUR_DATASET'
 
-    try:
-        token = os.environ['SANITY_TOKEN']
-    except KeyError:
-        print("Error: SANITY_TOKEN environment variable not set.")
-        return
-
+    url = os.environ.get('SANITY_URL')
+    token = os.environ['SANITY_TOKEN']
+    
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {token}"
@@ -44,5 +42,5 @@ def delete_post_from_sanity(document_id):
 
 # Example usage
 if __name__ == "__main__":
-    post_id = "0w3lID6Lsk7VK2mhODj6xb"  # replace with the ID of the post/document you want to delete
+    post_id = "0w3lID6Lsk7VK2mhODj6xb"  
     delete_post_from_sanity(post_id)
