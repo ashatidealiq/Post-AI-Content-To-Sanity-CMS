@@ -92,7 +92,7 @@ def upload_to_sanity(title, slug, content, excerpt):
     return response
 
 def main():
-    with open('posts18102023-02.csv', 'r') as csv_file:
+    with open('getkeywords.csv', 'r') as csv_file:
         csv_reader = csv.reader(csv_file)
         total_start_time = time.time()  # Start time for all posts
         for row in csv_reader:
