@@ -42,5 +42,5 @@ def delete_post_from_sanity(document_id):
 
 # Example usage
 if __name__ == "__main__":
-    post_id = "0w3lID6Lsk7VK2mhODj6xb"  
+    post_id = "3ER6NULiBAHBqYxtuLssFj"  
     delete_post_from_sanity(post_id)

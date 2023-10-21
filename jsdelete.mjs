@@ -3,9 +3,8 @@ import fetch from 'node-fetch';
 // deletes one off docs in sanity
 
 async function deletePostFromSanity(documentId) {
-    
-    const url = os.environ.get('SANITY_URL') 
-    const token = os.environ.get('SANITY_TOKEN')
+    const url = "https://vc1wqrrf.api.sanity.io/v1/data/mutate/production";
+    const token = 'sk5ftOXXXN59dEkzWCnMt734HJa0yPKlkM1ZpISU0jM20exqoZlIXlfBe8a6kyQegEaGg51V8s8WoppjOX7G3k5cWTRo9jECoV2dr0D8rRFpdKIvNlKikikuNHbCBC0OL1XHHd1vHzLKcUnfWftGETSD1NhSnlm2CGFwUZkqWSucBWd513GJ';
 
     const headers = {
         "Content-Type": "application/json",
@@ -45,5 +44,5 @@ async function deletePostFromSanity(documentId) {
     }
 }
 
-const postId = "TZnnZ6wjt1EWnwOBvZ38y8";  // wtf is going on now
+const postId = "E4bSqqjzc0QZpJy0QPCHnc";  // wtf is going on now
 deletePostFromSanity(postId);
