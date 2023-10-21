@@ -1,6 +1,7 @@
 import openai
 import os
 import re
+import random
 
 # Ensure to replace with your OpenAI API Key
 openai.api_key = os.environ['OPENAI_API_KEY']
@@ -68,7 +69,17 @@ def generate_content(title, max_tokens=150, temperature=0.7):
     if conclusion.startswith('.'):
         conclusion = conclusion[1:].strip()
 
-    content_blocks.append({"type": "h2", "text": "We understand you and we want to help"})
+conclusion_headings = [
+    "We understand you and we want to help",
+    "Got questions about your home loan? Let's talk",
+    "We're here to help",
+    "Need a hand? Let's talk!",
+    "Need assistance with your home loan? Let Ello help!"
+    ]
+
+random_conclusion = random.choice(conclusion_headings)
+
+    content_blocks.append({"type": "h2", "text": random_conclusion})
     content_blocks.append({"type": "paragraph", "text": conclusion})
 
     return content_blocks

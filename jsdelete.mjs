@@ -44,5 +44,5 @@ async function deletePostFromSanity(documentId) {
     }
 }
 
-const postId = "E4bSqqjzc0QZpJy0QPCHnc";  // wtf is going on now
+const postId = "3ER6NULiBAHBqYxtuLttxn";  // wtf is going on now
 deletePostFromSanity(postId);
