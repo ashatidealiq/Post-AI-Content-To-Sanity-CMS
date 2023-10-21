@@ -69,15 +69,15 @@ def generate_content(title, max_tokens=150, temperature=0.7):
     if conclusion.startswith('.'):
         conclusion = conclusion[1:].strip()
 
-conclusion_headings = [
-    "We understand you and we want to help",
-    "Got questions about your home loan? Let's talk",
-    "We're here to help",
-    "Need a hand? Let's talk!",
-    "Need assistance with your home loan? Let Ello help!"
-    ]
+    conclusion_headings = [
+        "We understand you and we want to help",
+        "Got questions about your home loan? Let's talk",
+        "We're here to help",
+        "Need a hand? Let's talk!",
+        "Need assistance with your home loan? Let Ello help!"
+        ]
 
-random_conclusion = random.choice(conclusion_headings)
+    random_conclusion = random.choice(conclusion_headings)
 
     content_blocks.append({"type": "h2", "text": random_conclusion})
     content_blocks.append({"type": "paragraph", "text": conclusion})
