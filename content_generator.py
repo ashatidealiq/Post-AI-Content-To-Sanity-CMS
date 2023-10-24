@@ -5,6 +5,7 @@ import random
 
 # Ensure to replace with your OpenAI API Key
 openai.api_key = os.environ['OPENAI_API_KEY']
+brokername = "Your Firm Name Here" # put your company name here to get a nice personal post conclusion
 
 def generate_excerpt(title):
     prompt = f"Provide a brief preview passage for a blog post titled '{title}' about the Australian mortgage market."
@@ -39,7 +40,7 @@ def generate_content(title, max_tokens=150, temperature=0.7):
     
     def get_intro_and_conclusion(title):
         intro_prompt = f"You are an Australian mortgage broker writing blog content for your website. Write an introduction for a blog post with the title: '{title}'"
-        conclusion_prompt = f"You are an Australian mortgage broker writing a blog post titled '{title}'. Your firm is called Ello Lending. Write a conclusion for a blog post with the title: '{title}'. Emphasize how your firm would love to help and answer questions and encourage the reader to contact you"
+        conclusion_prompt = f"You are an Australian mortgage broker writing a blog post titled '{title}'. Your firm is called {brokername}. Write a conclusion for a blog post with the title: '{title}'. Emphasize how your firm would love to help and answer questions and encourage the reader to contact you"
         intro = get_gpt_response(intro_prompt)
         conclusion = get_gpt_response(conclusion_prompt)
         return intro, conclusion
@@ -69,6 +70,7 @@ def generate_content(title, max_tokens=150, temperature=0.7):
     if conclusion.startswith('.'):
         conclusion = conclusion[1:].strip()
 
+    # bit of a hack so we dont just write the same conclusion over few hundred blog posts
     conclusion_headings = [
         "We understand you and we want to help",
         "Got questions about your home loan? Let's talk",
