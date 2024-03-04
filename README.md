@@ -1,4 +1,4 @@
-# Utils for Sanity CMS content
+# Generate Blog Content From LLM and Post To Sanity Headless CMS
 
 Contains py scripts to generate openai site content and upload to Sanity.
 
