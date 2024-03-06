@@ -1,6 +1,6 @@
-# Generate Blog Content For BM agency
+# Generate Blog Content For Sanity CMS
 
-Contains py scripts to generate content from Groq 
+Contains py scripts to generate content with OpenAI API and publish to Sanity headless CMS
 
 To run: Set up python env (and/or Node for js utils). main_script.py is control script, calls content_generator.py to generate posts
 
